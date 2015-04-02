@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>侧边导航</title>
+    <style>
+        html {
+            height: 100%;
+            background-color: #FFFFFF;
+        }
+
+        body {
+            background-color: #fff;
+            padding: 0;
+            margin: 0;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            height: 100%;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+        }
+    </style>
+</head>
+<body>
+<script src="https://leancloud.cn/scripts/lib/av-0.5.0.min.js"></script>
+<script>
+
+var fun = function(){
+    this.name = 'peter';
+	alert('adasds');
+    return {
+    name: 'jack'
+    };
+}
+
+var p = new fun();
+alert(p.name);
+
+var fun = function(){}
+
+fun.prototype = {
+    info : {
+    name : 'peter',
+    age : 25
+    }
+}
+
+var a = new fun();
+var b = new fun();
+
+a.info.name = 'jack';
+b.info.name = 'tom';
+alert(a.info.name);
+alert(b.info.name);
+/*
+AV.initialize("jjagdvss81s2w8gaho8pjsgttd2ormabhinggca2gmctoi5b","6aocso66b977p1lfdohqx28jligeytw75bob3218xvy9swhu");	
+var cafecarObj = AV.Object.extend("cafeCar");
+var menuObj = AV.Object.extend("menu");
+var customerObj = AV.Object.extend("customer");
+var orderObj = AV.Object.extend("order");
+var deliveryManObj = AV.Object.extend("deliveryMan");
+var cafeKitchenObj = AV.Object.extend("cafeKitchen");
+
+var cafeCar = AV.Object.createWithoutData("cafeCar", "551a00e3e4b08971ae57d8fc");
+var query = AV.Relation.reverseQuery('cafeKitchen', 'cafeCar', cafeCar);
+//var query = new AV.Query(cafeKitchenObj);
+//alert(JSON.stringify(myDate));
+
+//query2.first().then(function(order){alert(JSON.stringify(order.getCreatedAt()));});
+
+query.first().then(function(cafeKitchen){
+	var relation = cafeKitchen.relation("menu");
+	var query = relation.query();
+	query.equalTo("status", "上架"); 
+	var query1 = new AV.Query(deliveryManObj);
+	query1.equalTo("cafeCar", cafeCar);
+	var query2 = new AV.Query(orderObj);
+	query2.containedIn("status", ["等待付款","已接单","已发货"]);
+	var myDate = new Date();
+	myDate.setHours(0,0,0,0);
+	query2.greaterThanOrEqualTo("createdAt",myDate);
+	//query.notEqualTo("playerName", "Michael Yabuti");
+	query2.equalTo("cafeCar", cafeCar);
+	return AV.Promise.when(
+		query.find(),
+		query1.find(),
+		query2.find(),
+		cafeCar.fetch()
+   );
+  }).then(function(menu,deliveryMan,order,cafeCar){
+		for(var i = 0;i<menu.length;i++)
+		{
+			var numCode = menu[i].get("numberCode");
+			var amount = 0;
+			if(cafeCar.get("cart").hasOwnProperty(numCode.toString()))
+					amount+=cafeCar.get("cart")[numCode.toString()];
+			for(var j = 0;j<deliveryMan.length;j++)
+			{
+				if(deliveryMan[j].get("cart").hasOwnProperty(numCode.toString()))
+					amount+=deliveryMan[j].get("cart")[numCode.toString()];
+			}
+			for(var k = 0;k<order.length;k++)
+			{
+				if(order[k].get("cart").hasOwnProperty(numCode.toString()))
+					amount+=order[k].get("cart")[numCode.toString()];
+			}
+			
+			alert(amount);
+			if(amount < 0)return;
+		}
+		
+		//alert(JSON.stringify(menu));
+		//alert(JSON.stringify(deliveryMan));
+		//alert(JSON.stringify(order));
+		//alert(JSON.stringify(cafeCar));
+  });
+ 
+  
+ // ,function(errors){alert(JSON.stringify(errors));});
+/*
+//var cart = request.params.cart;
+var query = new AV.Query(inventoryObj);
+var flag = false;
+var list1 = new Array();
+query.find().then(function(inventoryObj){
+				inventoryObj.forEach(function(e) {
+				e.fetchWhenSave(true);
+				e.increment('reserve', -100);
+				e.increment('totalSales', 100);
+				list1.push(e);
+});
+return AV.Object.saveAll(list1);
+}).then(function(list){
+alert(list[0].get('reserve'));
+//alert(list[1].get('reserve'));
+});
+/*
+		cart.forEach(function(e) {
+			var query = new AV.Query(inventoryObj);
+			console.log(e);
+			var id = e.id;
+			var amount = e.amount;
+			query.equalTo('objectId', id)
+			console.log("inventory>0" + JSON.stringify(query));
+			query.first().then(function(inventory) {
+				inventory.fetchWhenSave(true);
+				inventory.increment('reserve', -amount);
+				inventory.increment('totalSales', amount);
+				console.log(id + " inventory beforeSave >>>>>>" + inventory.get('reserve'));
+				return inventory.save();
+			}).then(function(success) {
+				if (success.get('reserve') >= 0) {
+					console.log(">0");
+					console.log(id + " success.reserve >0 >>>>>>" + success.get('reserve'));
+					flag = true;
+				} else {
+					console.log(id + " success beforeSave >>>>>>" + success.get('reserve'));
+					success.fetchWhenSave(true);
+					success.increment('reserve', amount);
+					success.increment('totalSales', -amount);
+					success.save();
+					console.log(id + " success afterSave>>>>>>" + success.get('reserve'));
+					flag = false;
+				}
+			});
+
+		});
+		if (flag) {
+			response.success({
+				"status": "1"
+			});
+
+		} else {
+			response.error({
+				"status": "0"
+			});
+		}*/
+<!-- //AV.User.logIn("18666967481", "123456", {
+//  success: function(user) {
+    // Do stuff after successful login.
+//  },
+//  error: function(user, error) {
+//  alert("Error: " + error.code + " " + error.message);
+    // The login failed. Check error to see why.
+ // }
+//});
+//var user = AV.User.current(); -->
+/*
+var query = new AV.Query(cafecar);
+query.include("inventory");
+query.get("55126192e4b065f7eea59e55", {
+  success: function(cafecar) {
+    // The object was retrieved successfully.
+	var relation = cafecar.relation("inventory");
+	//alert(JSON.stringify((cafecar.get("inventory"))[0]));
+	var query = relation.query();
+//query.equalTo("title", "I'm Hungry");
+query.find({
+  success:function(list) {
+  //alert(JSON.stringify(list));
+    // list contains post liked by the current user which have the title "I'm Hungry".
+  }
+});
+  },
+  error: function(object, error) {
+    // The object was not retrieved successfully.
+    // error is a AV.Error with an error code and description.
+  }
+});
+// Make a new post
+//var cc = new cafecar();
+*/
+</script>
+</body>
+</html>
